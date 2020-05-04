@@ -56,7 +56,7 @@ public:
 
     String& replace(const char* target, const char* replacement);
 
-    String& erase(int from);
+    String& erase(int from, int to=-1);
 
     String& erase_front(int to);
 

@@ -235,13 +235,17 @@ String& String::replace(const char* target, const char* replacement)
     return this->replace(strTarget, strReplacement);
 }
 
-String& String::erase(int from)
+String& String::erase(int from, int to)
 {
     if (from < 0 || from > static_cast<int>(m_size))
         return *this;
 
-    memset(&m_buffer[from], 0, m_size - from);
-    m_size -= m_size - from;
+    to = (to == -1) ? m_size : to;
+    if (to == m_size)
+        memset(&m_buffer[from], 0, to - from);
+    else
+        memmove(&m_buffer[from], &m_buffer[to], m_size - to);
+    m_size -= to - from;
     return *this;
 }
 

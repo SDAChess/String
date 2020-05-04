@@ -59,6 +59,12 @@ int main(int argc, char** argv)
         return s == "o world" && s.size() == 7;
     });
 
+    TEST("erase (range)", [](){
+        String s("hello world");
+        s.erase(1, 2);
+        return s == "hllo world" && s.size() == 10;
+    });
+
     std::cout << "\nTests passed: " << passed << "/" << total << std::endl;
 
     return 0;
