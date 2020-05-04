@@ -10,12 +10,16 @@ String::String(const char* cString)
 {
     if (cString)
     {
-        unsigned int n = 0;
-        unsigned int i = 0;
-        while (cString[n] != '\0') n++;
+        unsigned n = 0;
+        // get size
+        while (cString[n] != '\0')
+            n++;
+        // copy
         m_buffer = new char[n + 1];
-        for (i; i < n; i++) m_buffer[i] = cString[i];
+        for (unsigned i = 0; i < n; i++)
+            m_buffer[i] = cString[i];
         m_buffer[n] = '\0';
+
         m_size = n;
     }
     else
@@ -27,21 +31,26 @@ String::String(const char* cString)
 
 String::String(const String& string)
 {
-    int i = 0;
-    int len = string.size();
+    unsigned len = string.size();
+    // copy string
     m_buffer = new char[len + 1];
-    for (i; i < len; i++) m_buffer[i] = string[i];
+    for (unsigned i = 0; i < len; i++)
+        m_buffer[i] = string[i];
+
     m_size = len;
     m_buffer[len] = '\0';
 }
 
 String::~String()
 {
-    m_size = 0;
-    delete[] m_buffer;
+    if (m_buffer != nullptr)
+    {
+        m_size = 0;
+        delete[] m_buffer;
+    }
 }
 
-int String::size() const
+unsigned String::size() const
 {
     return m_size;
 }
@@ -53,10 +62,13 @@ const char* String::c_str() const
 
 bool String::equals(const String& other) const
 {
-    if (m_size != other.size()) return false;
-    unsigned int n = 0;
-    while ((n < m_size) && (m_buffer[n] == other[n])) n++;
-    return (n == m_size);
+    if (m_size != other.size())
+        return false;
+
+    unsigned n = 0;
+    while ((n < m_size) && (m_buffer[n] == other[n]))
+        n++;
+    return n == m_size;
 }
 
 bool String::equals(const char* other) const
@@ -67,42 +79,30 @@ bool String::equals(const char* other) const
 
 int String::index(char c) const
 {
-    unsigned int i = 0;
-    for (i; i < m_size; i++)
-        if (m_buffer[i] == c) return (int)i;
+    for (unsigned i = 0; i < m_size; i++)
+        if (m_buffer[i] == c)
+            return static_cast<int>(i);
     return -1;
 }
 
 String& String::concat(const String& string)
 {
-    int stringSize = string.size();
-    unsigned int newLength = m_size + stringSize;
-    int len = newLength + 1;
-    char* tempStr = new char[len];
+    unsigned stringSize = string.size();
+    unsigned newLength = m_size + stringSize;
+    char* tempStr = new char[newLength + 1];
 
-    for (unsigned int i = 0; i < newLength; i++)
-    {
+    // copy first string into the new buffer
+    // then the other string
+    unsigned i = 0;
+    for (; i < m_size; i++)
         tempStr[i] = m_buffer[i];
-    }
-
-    for (int i = 0; i < stringSize; i++)
-    {
-        tempStr[newLength + i] = string[i];
-    }
+    for (; i - m_size < stringSize; i++)
+        tempStr[i] = string[i - m_size];
 
     delete[] m_buffer;
-    m_buffer = new char[len];
-
-    for (unsigned int i = 0; i < newLength; i++)
-    {
-        m_buffer[i] = tempStr[i];
-    }
-
-    m_size = newLength;
+    m_buffer = tempStr;
     m_buffer[newLength] = '\0';
-
-    delete[] tempStr;
-    tempStr = nullptr;
+    m_size = newLength;
 
     return *this;
 }
@@ -116,44 +116,41 @@ String& String::concat(const char* string)
 String& String::toUpper()
 {
     char diff = ('a' - 'A');
-    unsigned int i = 0;
-    for (i; i < m_size; i++)
+    for (unsigned i = 0; i < m_size; i++)
     {
         if ('a' <= m_buffer[i] && m_buffer[i] <= 'z')
-        {
             m_buffer[i] -= diff;
-        }
     }
     return *this;
 }
 
 String& String::toLower()
 {
-    for (unsigned int i = 0; i < m_size; i++)
+    char diff = ('a' - 'A');
+    for (unsigned i = 0; i < m_size; i++)
     {
         if ('A' <= m_buffer[i] && m_buffer[i] <= 'Z')
-        {
-            m_buffer[i] += ('a' - 'A');
-        }
+            m_buffer[i] += diff;
     }
     return *this;
 }
 
 int String::find(String& string)
 {
-    int strSize = string.size();
+    unsigned strSize = string.size();
 
-    if (strSize == 0) return -1;
+    if (strSize == 0)
+        return -1;
 
     int len = strSize - 1;
     int posSearch = 0;
-    unsigned int i = 0;
-    for (i; i < m_size; ++i)
+    for (unsigned i = 0; i < m_size; ++i)
     {
         if (m_buffer[i] == string.c_str()[posSearch])
         {
             ++posSearch;
-            if (posSearch == strSize) return i - len;
+            if (posSearch == strSize)
+                return i - len;
         }
         else
         {
@@ -176,9 +173,7 @@ String& String::replace(String& target, String& replacement)
     int startAt = this->find(target);
 
     if (startAt == -1)
-    {
         return *this;
-    }
 
     int replacementSize = replacement.size();
     int targetSize = target.size();
@@ -197,9 +192,7 @@ String& String::replace(String& target, String& replacement)
                 intervalIndex++;
             }
             else
-            {
                 tempStr[i] = m_buffer[intervalIndex > 0 ? (i + targetSize - intervalIndex) : i];
-            }
         }
     }
     else
@@ -212,24 +205,13 @@ String& String::replace(String& target, String& replacement)
                 intervalIndex++;
             }
             else
-            {
                 tempStr[i] = m_buffer[intervalIndex > 0 ? (i + targetSize) : i];
-            }
         }
     }
 
     delete[] m_buffer;
     m_size = newLength;
-    m_buffer = new char[len];
-
-    for (unsigned int i = 0; i < m_size; i++)
-    {
-        m_buffer[i] = tempStr[i];
-    }
-    m_buffer[newLength] = '\0';
-
-    delete[] tempStr;
-    tempStr = nullptr;
+    m_buffer = tempStr;
 
     return *this;
 }
@@ -286,8 +268,8 @@ String& String::operator=(const String& string)
     delete[] m_buffer;
     m_buffer = new char[len + 1];
 
-    int i = 0;
-    for (i; i < len; i++) m_buffer[i] = string[i];
+    for (int i = 0; i < len; i++)
+        m_buffer[i] = string[i];
 
     m_size = len;
     m_buffer[len] = '\0';
@@ -295,15 +277,13 @@ String& String::operator=(const String& string)
     return *this;
 }
 
-char String::operator[](unsigned int index) const
+char String::operator[](unsigned index) const
 {
-    if (index >= m_size) throw 1;
     return m_buffer[index];
 }
 
-char& String::operator[](unsigned int index)
+char& String::operator[](unsigned index)
 {
-    if (index >= m_size) throw 1;
     return m_buffer[index];
 }
 

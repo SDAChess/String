@@ -26,7 +26,7 @@ public:
 
     ~String();
 
-    int size() const;
+    unsigned size() const;
 
     const char* c_str() const;
 
@@ -64,9 +64,9 @@ public:
 
     String& operator=(const String& string);
 
-    char operator[](unsigned int index) const;
+    char operator[](unsigned index) const;
 
-    char& operator[](unsigned int index);
+    char& operator[](unsigned index);
 
     friend bool operator==(const String& left, const String& right);
 
@@ -95,7 +95,7 @@ public:
     String& operator+=(const String& string);
 
 private:
-    unsigned int m_size;
+    unsigned m_size;
     char* m_buffer;
 };
 
