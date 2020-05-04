@@ -4,7 +4,7 @@ cmake_policy(SET CMP0074 NEW)
 project(ArkScriptString)
 
 set(STRING_SOURCES
-    "${CMAKE_CURRENT_LIST_DIR}/source/String.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/src/String.cpp"
 
     PARENT_SCOPE
 )
