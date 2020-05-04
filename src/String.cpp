@@ -241,7 +241,7 @@ String& String::erase(int from)
         return *this;
 
     memset(&m_buffer[from], 0, m_size - from);
-    m_size -= from;
+    m_size -= m_size - from;
     return *this;
 }
 

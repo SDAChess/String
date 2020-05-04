@@ -31,7 +31,7 @@ int main(int argc, char** argv)
         String s("hello");
         String d(s);
 
-        return s == d;
+        return s == d && strcmp(s.c_str(), "hello") == 0;
     });
 
     TEST("unequality", [](){
@@ -45,6 +45,12 @@ int main(int argc, char** argv)
         String d("world");
 
         return strcmp((s + " " + d).c_str(), "hello world") == 0 && s == "hello" && d == "world";
+    });
+
+    TEST("erase", [](){
+        String s("hello world");
+        s.erase(s.size() - 1);
+        return s == "hello worl" && s.size() == 10;
     });
 
     std::cout << "Tests passed: " << passed << "/" << total << std::endl;
