@@ -307,62 +307,62 @@ char& String::operator[](unsigned int index)
     return m_buffer[index];
 }
 
-bool String::operator==(const String& left, const String& right)
+bool operator==(const String& left, const String& right)
 {
     return left.equals(right);
 }
 
-bool String::operator==(const String& left, const char* right)
+bool operator==(const String& left, const char* right)
 {
     return left.equals(right);
 }
 
-bool String::operator==(const char* left, const String& right)
+bool operator==(const char* left, const String& right)
 {
     return right.equals(left);
 }
 
-bool String::operator!=(const String& left, const String& right)
+bool operator!=(const String& left, const String& right)
 {
     return !left.equals(right);
 }
 
-bool String::operator!=(const String& left, const char* right)
+bool operator!=(const String& left, const char* right)
 {
     return !left.equals(right);
 }
 
-bool String::operator!=(const char* left, const String& right)
+bool operator!=(const char* left, const String& right)
 {
     return !right.equals(left);
 }
 
-bool String::operator<(const String& left, const String& right)
+bool operator<(const String& left, const String& right)
 {
     return strcmp(left.c_str(), right.c_str()) < 0;
 }
 
-bool String::operator<(const String& left, const char* right)
+bool operator<(const String& left, const char* right)
 {
     return strcmp(left.c_str(), right) < 0;
 }
 
-bool String::operator<(const char* left, const String& right)
+bool operator<(const char* left, const String& right)
 {
     return strcmp(left, right.c_str()) < 0;
 }
 
-String String::operator+(const String& left, const String& right)
+String operator+(const String& left, const String& right)
 {
     return String(left).concat(right);
 }
 
-String String::operator+(const String& left, const char* right)
+String operator+(const String& left, const char* right)
 {
     return String(left).concat(right);
 }
 
-String String::operator+(const char* left, const String& right)
+String operator+(const char* left, const String& right)
 {
     return String(left).concat(right);
 }
