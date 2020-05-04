@@ -251,7 +251,7 @@ String& String::erase_front(int to)
         return *this;
 
     memmove(&m_buffer[0], &m_buffer[to + 1], m_size - to);
-    m_size -= to;
+    m_size -= to + 1;
     return *this;
 }
 

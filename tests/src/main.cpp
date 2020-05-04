@@ -53,7 +53,13 @@ int main(int argc, char** argv)
         return s == "hello worl" && s.size() == 10;
     });
 
-    std::cout << "Tests passed: " << passed << "/" << total << std::endl;
+    TEST("erase_front", [](){
+        String s("hello world");
+        s.erase_front(3); // 0 to 3, included
+        return s == "o world" && s.size() == 7;
+    });
+
+    std::cout << "\nTests passed: " << passed << "/" << total << std::endl;
 
     return 0;
 }
