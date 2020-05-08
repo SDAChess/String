@@ -16,3 +16,15 @@ String text("Hello, world!");
 ```
 
 ## [Benchmark](http://quick-bench.com/DYwVJg3S2xX-WIz9ZZruTghxb5A)
+
+## Details
+
+Compiled with MSVC 15.9 (Win32)
+* Debug mode: `sizeof(String)` = 8 bytes
+* Release mode: `sizeof(String)` = 8 bytes
+* all tests are passing
+
+Compiled with MSVC 15.9 (64bits)
+* Debug mode: `sizeof(String)` = 16 bytes
+* Release mode: `sizeof(String)` = 16 bytes
+* all tests are passing
