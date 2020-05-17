@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Update Compilers
+      run: |
+        sudo apt-add-repository -y ppa:ubuntu-toolchain-r/test
+        sudo apt-get -yq install g++-8 gcc-8 cmake
+  
+    - name: Build CMake
+      run: |
+        cd tests/
+        cmake . -Bbuild -DCMAKE_BUILD_TYPE=Debug
+        cmake --build build
+
+    - name: Tests
+      run: |
+        cd tests/build/
+        ./Tests
