@@ -68,5 +68,6 @@ int main(int argc, char** argv)
     std::cout << "\nTests passed: " << passed << "/" << total << std::endl;
     std::cout << "sizeof(String) = " << sizeof(String) << std::endl;
 
-    return 0;
+    // if a test didn't pass, return -1
+    return (passed == total) ? 0 : -1;
 }
