@@ -14,6 +14,8 @@
 
 #include <string.h>  // for memmove, memset
 #include <string>    // for conversions
+#include <cstdio>    // for std::snprintf
+#include <utility>   // for std::forward
 
 /**
  * @brief A simple string class, smaller and faster compared to std::string
@@ -217,6 +219,31 @@ public:
      * @return char 
      */
     char& operator[](unsigned index);
+
+    /**
+     * @brief Format a string using snprintf
+     * 
+     * @tparam Args 
+     * @param n Maximum number of bytes to use
+     * @param args Arguments to format
+     * @return String& 
+     */
+    template<typename... Args>
+    String& format(unsigned n, Args&&... args)
+    {
+        char* temp = new char[n];
+        if (std::snprintf(temp, n, m_buffer, std::forward<Args>(args)...) < 0)
+            return *this;  // an error occurred
+
+        unsigned i = 0;
+        while (temp[i] != '\0')
+            i++;
+        m_size = i;
+        delete[] m_buffer;
+        m_buffer = temp;
+
+        return *this;
+    }
 
     friend bool operator==(const String& left, const String& right);
 

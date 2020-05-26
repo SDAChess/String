@@ -122,6 +122,11 @@ int main(int argc, char** argv)
         return s < d && "aBc" < d;
     });
 
+    tests("format", [](){
+        String s("%s %i 0x%x");
+        return s.format(256, "hello", 12, 3735928559) == "hello 12 0xdeadbeef";
+    });
+
     tests.report();
 
     return 0;
