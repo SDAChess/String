@@ -27,7 +27,7 @@ class Tests
 public:
     Tests();
     void operator()(const char* name, std::function<bool()>&& func);
-    void report();
+    int report();
 
 private:
     int m_passed, m_total;

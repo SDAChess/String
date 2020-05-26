@@ -127,8 +127,6 @@ int main(int argc, char** argv)
         return s.format(256, "hello", 12, 3735928559) == "hello 12 0xdeadbeef";
     });
 
-    tests.report();
-
-    // if a test didn't pass, return -1
-    return (passed == total) ? 0 : -1;
+    // if a test didn't pass, returns -1
+    return tests.report();
 }

@@ -19,7 +19,7 @@ void Tests::operator()(const char* name, std::function<bool()>&& func)
         std::cout << 'x ' << std::setw(20) << name << " test failed" << std::endl;
 }
 
-void Tests::report()
+int Tests::report()
 {
     std::cout << "\nTests passed: " << m_passed << "/" << m_total << std::endl;
 #ifdef ENVIRONMENT32
@@ -28,4 +28,6 @@ void Tests::report()
     std::cout << "Built on 64bits platform" << std::endl;
 #endif
     std::cout << "sizeof(String) = " << sizeof(String) << std::endl;
+
+    return (m_total == m_passed) ? 0 : -1;
 }
