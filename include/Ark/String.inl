@@ -1,7 +1,7 @@
 #include <tuple>        // std::tuple, std::make_tuple
 #include <utility>      // std::forward
 #include <type_traits>  // std::is_same, std::enable_if
-#include <exception>    // std::exception
+#include <stdexcept>    // std::runtime_error
 
 #include <iostream>  // TODO REMOVE ME
 
@@ -90,13 +90,13 @@ namespace internal
                 else if (fdata.tok == 'x')  // hexa
                     printNum(fdata, value, 16);
                 else
-                    throw std::exception("Unknown base in format specifier for number");
+                    throw std::runtime_error("Unknown base in format specifier for number");
             }
             else if constexpr (std::is_same<T, const char*>::value)
             {
                 // check format specifier
                 if (fdata.tok != '%')
-                    throw std::exception("Unknown format specifier for const char*");
+                    throw std::runtime_error("Unknown format specifier for const char*");
 
                 // copy string and avoid buffer overflow
                 for (unsigned i = 0; fdata.pos < fdata.tempSize && value[i] != '\0'; ++i)
@@ -109,7 +109,7 @@ namespace internal
             {
                 // check format specifier
                 if (fdata.tok != '%')
-                    throw std::exception("Unknown format specifier for std::string_view");
+                    throw std::runtime_error("Unknown format specifier for std::string_view");
 
                 // copy string and avoid buffer overflow
                 for (unsigned i = 0; fdata.pos < fdata.tempSize && i < value.size(); ++i)
@@ -122,7 +122,7 @@ namespace internal
             {
                 // check format specifier
                 if (fdata.tok != '%')
-                    throw std::exception("Unknown format specifier for char");
+                    throw std::runtime_error("Unknown format specifier for char");
 
                 // avoid buffer overflow
                 if (fdata.pos < fdata.tempSize)
