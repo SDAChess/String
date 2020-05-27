@@ -10,13 +10,24 @@ Tests::Tests() :
 void Tests::operator()(const char* name, std::function<bool()>&& func)
 {
     m_total++;
-    if (func())
+
+    bool output = false;
+    try
+    {
+        output = func();
+    }
+    catch (...)
+    {
+        output = false;
+    }
+
+    if (output)
     {
         m_passed++;
         std::cout << std::setw(20) << name << " test passed" << std::endl;
     }
     else
-        std::cout << 'x ' << std::setw(20) << name << " test failed" << std::endl;
+        std::cout << "x " << std::setw(20) << name << " test failed" << std::endl;
 }
 
 int Tests::report()

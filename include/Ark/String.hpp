@@ -229,21 +229,7 @@ public:
      * @return String& 
      */
     template<typename... Args>
-    String& format(unsigned n, Args&&... args)
-    {
-        char* temp = new char[n];
-        if (std::snprintf(temp, n, m_buffer, std::forward<Args>(args)...) < 0)
-            return *this;  // an error occurred
-
-        unsigned i = 0;
-        while (temp[i] != '\0')
-            i++;
-        m_size = i;
-        delete[] m_buffer;
-        m_buffer = temp;
-
-        return *this;
-    }
+    String& format(unsigned n, Args&&... args);
 
     friend bool operator==(const String& left, const String& right);
 
@@ -275,5 +261,7 @@ private:
     unsigned m_size;
     char* m_buffer;
 };
+
+#include "String.inl"
 
 #endif // ARKSCRIPT_STRING_H
