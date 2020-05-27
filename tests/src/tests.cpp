@@ -27,7 +27,7 @@ void Tests::operator()(const char* name, std::function<bool()>&& func)
         std::cout << std::setw(20) << name << " test passed" << std::endl;
     }
     else
-        std::cout << "x " << std::setw(20) << name << " test failed" << std::endl;
+        std::cout << "x " << std::setw(18) << name << " test failed" << std::endl;
 }
 
 int Tests::report()

@@ -123,9 +123,10 @@ int main(int argc, char** argv)
     });
 
     tests("format", [](){
-        String s("test % something %% %% 0x%% the end %% ok");
+        String s("test % something %% %% 0x%x the end %% ok");
         s.format(256, std::string_view("hello"), -12345, 3735928559);
-        return s == "test something hello -12345 0x3735928559 the end %% ok";
+        std::cout << s.c_str() << "\n";
+        return s == "test something hello -12345 0xdeadbeef the end %% ok";
     });
 
     // if a test didn't pass, returns -1

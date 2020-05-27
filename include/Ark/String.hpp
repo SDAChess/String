@@ -14,8 +14,6 @@
 
 #include <string.h>  // for memmove, memset
 #include <string>    // for conversions
-#include <cstdio>    // for std::snprintf
-#include <utility>   // for std::forward
 
 /**
  * @brief A simple string class, smaller and faster compared to std::string
@@ -222,9 +220,17 @@ public:
 
     /**
      * @brief Format a string using snprintf
+     * @details The format is held by the string itself, then the arguments are passed to replace the format specifiers.
+     *          Since this function is templated, a common format specifier `%%` replaces (nearly) all the other known ones.
+     *          Thus, when there are no argument left, this function doesn't go on an undefined behaviour trying to read
+     *          arguments which weren't given, it will just continue to copy the rest of the string and leave the other format
+     *          specifiers in the string (if any) untouched.
+     *          Since the common format specifier is `%%`, writing a single `%` is just adding a `%` to the string.
+     *          For integers, there is a second specifier `%x` to write the number in hexadecimal.
+     *          The instance is modified and size is changed, as well as the internal buffer.
      * 
      * @tparam Args 
-     * @param n Maximum number of bytes to use
+     * @param n Maximum number of bytes to use for the new string
      * @param args Arguments to format
      * @return String& 
      */

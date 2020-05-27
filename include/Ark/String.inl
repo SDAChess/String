@@ -1,6 +1,9 @@
-#include <tuple>
-#include <utility>
-#include <type_traits>
+#include <tuple>        // std::tuple, std::make_tuple
+#include <utility>      // std::forward
+#include <type_traits>  // std::is_same, std::enable_if
+#include <exception>    // std::exception
+
+#include <iostream>  // TODO REMOVE ME
 
 namespace internal
 {
@@ -19,17 +22,48 @@ namespace internal
         unsigned used;
     };
 
-    inline int pow10(char pow)
-    {
-        int ten = 10;
-        for (char i=1; i < pow; ++i)
-            ten *= 10;
-        return ten;
-    }
-
     inline long long int abs(long long int val)
     {
         return val < 0 ? -1 * val : val;
+    }
+
+    inline void printNum(FormatData& fdata, long long int value, int base)
+    {
+        // get number of digits
+        long long int copy = abs(value);
+        char digCount = -1;
+        for (; copy > 0; ++digCount)
+            copy /= base;
+        // handle negative numbers
+        if (value < 0)
+        {
+            // overflow guard
+            if (fdata.pos < fdata.tempSize)
+            {
+                fdata.temp[fdata.pos] = '-';
+                fdata.pos++;
+            }
+            value *= -1;
+        }
+        // overflow guard
+        if (fdata.pos + digCount >= fdata.tempSize)
+            return;
+        fdata.pos += digCount;
+        unsigned end = fdata.pos;
+        // copy into string
+        do
+        {
+            // avoid buffer overflow
+            if (fdata.pos < fdata.tempSize)
+            {
+                fdata.temp[fdata.pos] = "0123456789abcdef"[value % base];
+                fdata.pos--;
+            }
+            else  // in case of buffer overflow, no need to burn cpu cycles cutting the number into pieces
+                break;
+            value /= base;
+        } while (value > 0);
+        fdata.pos = end + 1;  // + 1 because end is pointing at the last character in the string, we want the one after this one
     }
 
     template<unsigned I=0, typename... Tp>
@@ -51,38 +85,19 @@ namespace internal
                           std::is_same<T, unsigned long>::value     ||
                           std::is_same<T, unsigned long long>::value)
             {
-                // get number of digits
-                long long int copy = abs(value);
-                char digCount = -1;
-                for (; copy > 0; ++digCount)
-                    copy /= 10;
-                // handle negative numbers
-                if (value < 0)
-                {
-                    // owerflow guard
-                    if (fdata.pos < fdata.tempSize)
-                    {
-                        fdata.temp[fdata.pos] = '-';
-                        fdata.pos++;
-                    }
-                    value *= -1;
-                }
-                // copy into string
-                while (digCount >= 0)
-                {
-                    // avoid buffer overflow
-                    if (fdata.pos < fdata.tempSize)
-                    {
-                        fdata.temp[fdata.pos] = '0' + ((value / (digCount ? pow10(digCount) : 1)) % 10);
-                        fdata.pos++;
-                    }
-                    else  // in case of buffer overflow, no need to burn cpu cycles cutting the number into pieces
-                        break;
-                    digCount--;
-                }
+                if (fdata.tok == '%')  // default base is 10
+                    printNum(fdata, value, 10);
+                else if (fdata.tok == 'x')  // hexa
+                    printNum(fdata, value, 16);
+                else
+                    throw std::exception("Unknown base in format specifier for number");
             }
             else if constexpr (std::is_same<T, const char*>::value)
             {
+                // check format specifier
+                if (fdata.tok != '%')
+                    throw std::exception("Unknown format specifier for const char*");
+
                 // copy string and avoid buffer overflow
                 for (unsigned i = 0; fdata.pos < fdata.tempSize && value[i] != '\0'; ++i)
                 {
@@ -92,6 +107,10 @@ namespace internal
             }
             else if constexpr (std::is_same<T, std::string_view>::value)
             {
+                // check format specifier
+                if (fdata.tok != '%')
+                    throw std::exception("Unknown format specifier for std::string_view");
+
                 // copy string and avoid buffer overflow
                 for (unsigned i = 0; fdata.pos < fdata.tempSize && i < value.size(); ++i)
                 {
@@ -101,6 +120,10 @@ namespace internal
             }
             else if constexpr (std::is_same<T, char>::value)
             {
+                // check format specifier
+                if (fdata.tok != '%')
+                    throw std::exception("Unknown format specifier for char");
+
                 // avoid buffer overflow
                 if (fdata.pos < fdata.tempSize)
                 {
@@ -148,8 +171,8 @@ namespace internal
                 else
                 {
                     fdata.tok = fdata.buffer[fdata.i];
-                    // % - %
-                    if (fdata.buffer[fdata.i] == '%')
+                    // % - [special character to indicate a format]
+                    if (fdata.buffer[fdata.i] == '%' || fdata.buffer[fdata.i] == 'x')
                         format<I + 1, Tp...>(fdata, tp);
                     // % - char
                     else
