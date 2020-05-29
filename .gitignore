@@ -1,2 +1,4 @@
 build/
 b64/
+makedocs.ps1
+warnings.log

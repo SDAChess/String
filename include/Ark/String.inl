@@ -3,8 +3,6 @@
 #include <type_traits>  // std::is_same, std::enable_if
 #include <stdexcept>    // std::runtime_error
 
-#include <iostream>  // TODO REMOVE ME
-
 namespace internal
 {
     struct FormatData
