@@ -15,6 +15,8 @@ Use cmake and `add_subdirectory(String)`, then the files to include are located 
 String text("Hello, world!");
 ```
 
+Doxygen documentation: https://arkscript-lang.github.io/String/html/
+
 ## [Benchmark](http://quick-bench.com/DYwVJg3S2xX-WIz9ZZruTghxb5A)
 
 ## Details
