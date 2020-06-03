@@ -83,12 +83,36 @@ $(document).ready(function(){initNavTree('index.html','');});
 <div class="title">ArkScriptString Documentation</div>  </div>
 </div><!--header-->
 <div class="contents">
-</div><!-- contents -->
+<div class="textblock"><p>A lightweight, dependency-free C++ custom string, with homemade formatting.</p>
+<h2>Install</h2>
+<p>Using CMake:</p><ul>
+<li><code>add_subdirectory(String)</code></li>
+<li>include files to add in your <code>include_directories(...)</code>: <code>STRING_INCLUDES</code></li>
+<li>source files to add to your target: <code>STRING_SOURCES</code></li>
+</ul>
+<h2>How to use</h2>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="d8/d32/String_8hpp.html">Ark/String.hpp</a>&gt;</span></div>
+<div class="line"></div>
+<div class="line"><a class="code" href="d3/dee/classString.html">String</a> text(<span class="stringliteral">&quot;Hello, world!&quot;</span>);</div>
+</div><!-- fragment --><p>Doxygen documentation: <a href="https://arkscript-lang.github.io/String/html/">https://arkscript-lang.github.io/String/html/</a></p>
+<h2><a href="http://quick-bench.com/DYwVJg3S2xX-WIz9ZZruTghxb5A">Benchmark</a></h2>
+<h2>Details</h2>
+<p>Compiled with MSVC 15.9 (Win32)</p><ul>
+<li>Debug mode: <code>sizeof(String)</code> = 8 bytes</li>
+<li>Release mode: <code>sizeof(String)</code> = 8 bytes</li>
+<li>all tests are passing</li>
+</ul>
+<p>Compiled with MSVC 15.9 (64bits)</p><ul>
+<li>Debug mode: <code>sizeof(String)</code> = 16 bytes</li>
+<li>Release mode: <code>sizeof(String)</code> = 16 bytes</li>
+<li>all tests are passing </li>
+</ul>
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri May 29 2020 10:54:48 for ArkScriptString by
+    <li class="footer">Generated on Fri May 29 2020 11:06:34 for ArkScriptString by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.8 </li>
   </ul>
