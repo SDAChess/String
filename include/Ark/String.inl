@@ -184,7 +184,7 @@ namespace internal
 template<typename... Args>
 String& String::format(unsigned n, Args&&... args)
 {
-    std::tuple<Args...> parsed = std::make_tuple<Args...>(std::forward<Args>(args)...);
+    auto parsed = std::make_tuple<Args...>(std::forward<Args>(args)...);
 
     internal::FormatData fdata;
     fdata.temp = new char[n];
