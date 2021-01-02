@@ -105,8 +105,13 @@ namespace internal
 
         long long int i_val = static_cast<long long int>(value);
         printNum(fdata, i_val, /* base */ 10);
+
         fdata.temp[fdata.pos] = '.'; fdata.pos++;
+
+        value *= value > 0.0 ? 1.0 : -1.0;
+        i_val *= i_val > 0   ? 1   : -1;
         long long int decimals = static_cast<long long int>((value - i_val) * std::pow(10, dec_places(value)));
+
         printNum(fdata, decimals, /* base */ 10);
     }
 

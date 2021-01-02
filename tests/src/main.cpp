@@ -124,9 +124,9 @@ int main(int argc, char** argv)
 
     tests("format", [](){
         String s("test % something %% %% 0x%x float %% the end %% ok");
-        s.format(256, std::string_view("hello"), -12345, 3735928559, 1.234);
+        s.format(256, std::string_view("hello"), -12345, 3735928559, -1.235);
         std::cout << s.c_str() << "\n";
-        return s == "test something hello -12345 0xdeadbeef float 1.234 the end %% ok";
+        return s == "test something hello -12345 0xdeadbeef float -1.235 the end %% ok";
     });
 
     // if a test didn't pass, returns -1
