@@ -2,6 +2,7 @@
 #include <utility>      // std::forward
 #include <type_traits>  // std::is_same, std::enable_if
 #include <stdexcept>    // std::runtime_error
+#include <cmath>        // std::pow
 
 namespace internal
 {
