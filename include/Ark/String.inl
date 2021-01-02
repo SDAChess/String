@@ -64,6 +64,51 @@ namespace internal
         fdata.pos = end + 1;  // + 1 because end is pointing at the last character in the string, we want the one after this one
     }
 
+    inline int dec_places(long double d)
+    {
+        constexpr double precision = 1e-7;
+        long double temp = 0.0;
+        int decimal_places = 0;
+
+        do
+        {
+            d *= 10;
+            temp = d - static_cast<int>(d);
+            decimal_places++;
+        } while(temp > precision && decimal_places < std::numeric_limits<long double>::digits10);
+
+        return decimal_places;
+    }
+
+    inline int dig_places(long double d)
+    {
+        int digit_places = 0;
+        int i = static_cast<int>(d);
+        while (i != 0)
+        {
+            digit_places++;
+            i /= 10;
+        }
+        return digit_places;
+    }
+
+    inline void printFloat(FormatData& fdata, long double value)
+    {
+        if (value == 0.0)
+        {
+            fdata.temp[fdata.pos] = '0'; fdata.pos++;
+            fdata.temp[fdata.pos] = '.'; fdata.pos++;
+            fdata.temp[fdata.pos] = '0'; fdata.pos++;
+            return;
+        }
+
+        long long int i_val = static_cast<long long int>(value);
+        printNum(fdata, i_val, /* base */ 10);
+        fdata.temp[fdata.pos] = '.'; fdata.pos++;
+        long long int decimals = static_cast<long long int>((value - i_val) * std::pow(10, dec_places(value)));
+        printNum(fdata, decimals, /* base */ 10);
+    }
+
     template<unsigned I=0, typename... Tp>
     typename std::enable_if<sizeof...(Tp) < I, void>::type format(FormatData& fdata, std::tuple<Tp...>& tp)
     {}
@@ -89,6 +134,15 @@ namespace internal
                     printNum(fdata, value, 16);
                 else
                     throw std::runtime_error("Unknown base in format specifier for number");
+            }
+            else if constexpr (std::is_same<T, float>::value      ||
+                               std::is_same<T, double>::value     ||
+                               std::is_same<T, long double>::value)
+            {
+                if (fdata.tok == '%')
+                    printFloat(fdata, value);
+                else
+                    throw std::runtime_error("Unknown format specifier for floating number");
             }
             else if constexpr (std::is_same<T, const char*>::value)
             {
