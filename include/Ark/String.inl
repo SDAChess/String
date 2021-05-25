@@ -28,6 +28,13 @@ namespace internal
 
     inline void printNum(FormatData& fdata, long long int value, int base)
     {
+        if (value == 0)
+        {
+            fdata.temp[fdata.pos] = '0';
+            fdata.pos++;
+            return;
+        }
+
         // get number of digits
         long long int copy = abs(value);
         char digCount = -1;
