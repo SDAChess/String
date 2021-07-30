@@ -1,16 +1,17 @@
 cmake_minimum_required(VERSION 3.10)
-cmake_policy(SET CMP0074 NEW)
 
 project(ArkScriptString)
 
-set(STRING_SOURCES
-    "${CMAKE_CURRENT_LIST_DIR}/src/String.cpp"
+set(SOURCE_FILES "src/String.cpp")
 
-    PARENT_SCOPE
-)
+# We declare the project as a static library and add all the source code files to it.
+add_library(ArkScriptString STATIC ${HEADER_FILES} ${SOURCE_FILES})
 
-set(STRING_INCLUDES
-    "${CMAKE_CURRENT_LIST_DIR}/include"
+target_include_directories(ArkScriptString PUBLIC "include")
 
-    PARENT_SCOPE
+set_target_properties(
+    ArkScriptString
+    PROPERTIES
+        CXX_STANDARD 17
+        CXX_STANDARD_REQUIRED ON
 )
