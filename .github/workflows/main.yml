@@ -18,13 +18,12 @@ jobs:
         sudo apt-add-repository -y ppa:ubuntu-toolchain-r/test
         sudo apt-get -yq install g++-8 gcc-8 cmake
   
-    - name: Build CMake
+    - name: Build Library
       run: |
-        cd tests/
         cmake . -Bbuild -DCMAKE_BUILD_TYPE=Debug
         cmake --build build
 
-    - name: Tests
+    - name: Run tests
       run: |
-        cd tests/build/
-        ./Tests
+        cd build/
+        make test
