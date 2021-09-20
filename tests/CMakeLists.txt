@@ -13,4 +13,11 @@ target_link_libraries (
     ArkScriptString
 )
 
+set_target_properties(
+    tests 
+    PROPERTIES
+        CXX_STANDARD 17
+        CXX_STANDARD_REQUIRED ON
+)
+
 add_test (NAME StringTests COMMAND tests)
