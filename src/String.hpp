@@ -12,6 +12,7 @@
 #ifndef ARKSCRIPT_STRING_H
 #define ARKSCRIPT_STRING_H
 
+#include <string.h>  // for memmove, memset
 #include <string>    // for conversions
 
 /**
@@ -262,6 +263,11 @@ public:
 
     String& operator+=(const String& string);
 
+private:
+    unsigned m_size;
+    char* m_buffer;
 };
+
+#include "String.inl"
 
 #endif // ARKSCRIPT_STRING_H
