@@ -1,5 +1,5 @@
 #include <iostream>
-#include <Ark/String.hpp>
+#include "String.hpp"
 #include "tests.hpp"
 
 int main(int argc, char** argv)

@@ -20,7 +20,7 @@
 #endif
 
 #include <functional>
-#include <Ark/String.hpp>
+#include "String.hpp"
 
 class Tests
 {
