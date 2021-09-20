@@ -13,7 +13,7 @@ file(GLOB_RECURSE SOURCE_FILES
 # including content of project
 include_directories(${STRING_INCLUDES})
 
-add_executable(${PROJECT_NAME} ${SOURCE_FILES} ${STRING_SOURCES})
+target_link_libraries(${PROJECT_NAME} ArkScriptString) 
 
 # setting up project properties
 set_target_properties(
