@@ -1,5 +1,5 @@
 include_directories (
-    ${ArkScriptString_SOURCE_DIR}/src
+    ${String_SOURCE_DIR}/include/Ark
     "src/"
 )
 

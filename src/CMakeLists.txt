@@ -3,8 +3,6 @@ set(SOURCE_FILES String.cpp)
 # We declare the project as a static library.
 add_library(ArkScriptString STATIC ${HEADER_FILES} ${SOURCE_FILES})
 
-target_include_directories(ArkScriptString PUBLIC "/")
-
 set_target_properties(
     ArkScriptString
     PROPERTIES
